@@ -71,6 +71,12 @@ namespace Physics {
                 p1->posY -= pushY;
                 p2->posX += pushX;
                 p2->posY += pushY;
+
+                const double DAMPING = 0.999;
+                p1->velX *= DAMPING;
+                p1->velY *= DAMPING;
+                p2->velX *= DAMPING;
+                p2->velY *= DAMPING;
             }
         }
 
@@ -136,6 +142,8 @@ namespace Physics {
         static void UpdatePosition(Particle^ p, double dt) {
             p->posX += p->velX * dt;
             p->posY += p->velY * dt;
+
+            
         }
     };
 }
