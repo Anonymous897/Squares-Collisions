@@ -1,5 +1,10 @@
 ﻿#pragma once
+#define WIN32_LEAN_AND_MEAN
 #include "Physics.h"
+#include <windows.h>
+#pragma comment(lib, "user32.lib")
+
+__declspec(dllimport) HCURSOR __stdcall LoadCursorFromFileW(LPCWSTR lpFileName);
 
 namespace Project13 {
     using namespace System;
@@ -29,6 +34,17 @@ namespace Project13 {
         System::ComponentModel::Container^ components;
         Random^ rnd;
 
+        System::Void OnLoad(Object^ sender, EventArgs^ e) {
+            this->BackColor = Color::White;
+            this->Text = L"Elastic Collisions — move mouse to interact";
+
+            HCURSOR hCursor = LoadCursorFromFileW(L"Skyrim-move.ani");
+            if (hCursor != NULL) {
+                this->Cursor = gcnew System::Windows::Forms::Cursor(
+                    System::IntPtr((void*)hCursor));
+            }
+        }
+      
         static const int PARTICLE_COUNT = 12;
         static const int PARTICLE_SIZE = 48;
         static const double TIME_STEP = 0.5;
@@ -236,11 +252,6 @@ namespace Project13 {
                         threads[i]->Join(1000);
                 }
             }
-        }
-
-        System::Void OnLoad(Object^ sender, EventArgs^ e) {
-            this->BackColor = Color::White;
-            this->Text = L"Elastic Collisions — move mouse to interact";
         }
 
         System::Void OnMouseMove(Object^ sender, MouseEventArgs^ e) {
